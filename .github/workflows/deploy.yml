@@ -112,8 +112,10 @@ jobs:
           SSR=""
           if [ -f "$APP_DIR/package.json" ] && grep -q '"next"[[:space:]]*:' "$APP_DIR/package.json"; then
             NEXTCFG="$(cat "$APP_DIR"/next.config.* 2>/dev/null || true)"
+            # Next.js без output:'export' = серверный рантайм (Pages не тянет) → SSR ВСЕГДA,
+            # даже если в корне завалялся index.html: деплой на Pages не даст живого SSR-приложения.
             if ! printf '%s' "$NEXTCFG" | grep -qE "output[[:space:]]*:[[:space:]]*['\"]export['\"]"; then
-              [ ! -f "$DEPLOY_DIR/index.html" ] && SSR=1
+              SSR=1
             fi
           fi
           echo "ssr=$SSR" >> "$GITHUB_OUTPUT"
