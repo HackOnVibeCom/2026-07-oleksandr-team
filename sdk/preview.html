@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GrowthKit — Mechanics Preview</title>
+    <style>
+      body {
+        font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+        background: #eef1f6;
+        margin: 0;
+        padding: 32px 16px;
+        color: #2b2d33;
+      }
+      .wrap { max-width: 420px; margin: 0 auto; }
+      h1 { font-size: 22px; margin: 0 0 4px; }
+      .lead { font-size: 14px; color: #8a8f99; margin: 0 0 24px; }
+      .mech {
+        background: #fff;
+        border-radius: 18px;
+        padding: 18px 20px 22px;
+        margin-bottom: 18px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+      }
+      .mech__name {
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        color: #6d5efc;
+      }
+      .mech__desc { font-size: 13px; color: #8a8f99; margin: 2px 0 6px; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>GrowthKit — mechanics preview</h1>
+      <p class="lead">
+        Step 7: all four reusable mechanic blocks, rendered directly (no AI yet).
+      </p>
+
+      <section class="mech">
+        <div class="mech__name">share</div>
+        <div class="mech__desc">Achievement card → share modal</div>
+        <div id="slot-share"></div>
+      </section>
+
+      <section class="mech">
+        <div class="mech__name">referral</div>
+        <div class="mech__desc">Invite a friend, both get a reward</div>
+        <div id="slot-referral"></div>
+      </section>
+
+      <section class="mech">
+        <div class="mech__name">waitlist</div>
+        <div class="mech__desc">Join the queue, invite friends to move up</div>
+        <div id="slot-waitlist"></div>
+      </section>
+
+      <section class="mech">
+        <div class="mech__name">watermark</div>
+        <div class="mech__desc">Passive "Made with" badge (bottom-right of page)</div>
+      </section>
+    </div>
+
+    <!-- Load the SDK with demo config -->
+    <script
+      src="growthkit.js"
+      data-app-name="DemoApp"
+      data-app-niche="preview"
+      data-install-url="../apps/fittrack/install.html"
+      data-api-key="demo-preview"
+    ></script>
+    <script>
+      // Render each mechanic directly to verify the blocks (Step 7).
+      GrowthKit.render("share", document.getElementById("slot-share"), {
+        title: "Level 5 reached!",
+        stats: [{ text: "⭐ 1,240 pts" }, { text: "🔥 7-day streak" }],
+      });
+      GrowthKit.render("referral", document.getElementById("slot-referral"), {
+        reward: "1 month Pro",
+      });
+      GrowthKit.render("waitlist", document.getElementById("slot-waitlist"), {
+        position: 128,
+      });
+      GrowthKit.render("watermark", null, {});
+    </script>
+  </body>
+</html>

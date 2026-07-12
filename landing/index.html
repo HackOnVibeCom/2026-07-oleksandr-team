@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GrowthKit — AI-assembled growth loops for any app</title>
+    <style>
+      :root {
+        --bg: #0d0e13;
+        --card: #16181f;
+        --line: #23262f;
+        --accent: #6d5efc;
+        --accent2: #34d399;
+        --ink: #eef0f5;
+        --muted: #9297a3;
+        --font: -apple-system, "Segoe UI", Roboto, sans-serif;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font-family: var(--font); background: var(--bg); color: var(--ink); line-height: 1.55; }
+      .wrap { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+      a { color: inherit; }
+      .section { padding: 56px 0; border-bottom: 1px solid var(--line); }
+      h2 { font-size: 26px; font-weight: 800; margin-bottom: 8px; }
+      .lead { color: var(--muted); font-size: 16px; max-width: 620px; }
+
+      /* Hero */
+      .hero { padding: 84px 0 64px; text-align: center; }
+      .badge { display: inline-block; font-size: 12px; font-weight: 700; color: #c3bbff;
+        background: rgba(109,94,252,0.15); padding: 6px 14px; border-radius: 999px; }
+      .hero h1 { font-size: 46px; font-weight: 900; line-height: 1.1; margin: 20px 0 16px; letter-spacing: -0.5px; }
+      .hero h1 span { background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+      .hero p { color: var(--muted); font-size: 19px; max-width: 640px; margin: 0 auto 28px; }
+      .cta { display: inline-flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+      .btn { text-decoration: none; font-weight: 700; font-size: 15px; padding: 13px 22px; border-radius: 12px; }
+      .btn--primary { background: var(--accent); color: #fff; }
+      .btn--ghost { border: 1px solid var(--line); color: var(--ink); }
+      .code { display: inline-block; margin-top: 30px; background: #0a0b0f; border: 1px solid var(--line);
+        border-radius: 12px; padding: 14px 18px; font-family: ui-monospace, monospace; font-size: 13px; color: #b9c0d4; }
+      .code b { color: var(--accent2); }
+
+      /* Steps */
+      .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 24px; }
+      .step { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 22px; }
+      .step__n { font-size: 12px; font-weight: 800; color: var(--accent); }
+      .step h3 { font-size: 17px; margin: 8px 0 6px; }
+      .step p { color: var(--muted); font-size: 14px; }
+
+      /* Mechanics */
+      .mechs { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+      .mech { background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 9px 16px; font-size: 14px; font-weight: 600; }
+      .mech small { color: var(--muted); font-weight: 400; }
+
+      /* Flywheel / impact */
+      .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
+      .col { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 24px; }
+      .col h3 { font-size: 18px; margin-bottom: 8px; }
+      .col p { color: var(--muted); font-size: 14px; }
+      .col--impact { border-color: rgba(52,211,153,0.3); }
+      .col--impact h3 { color: var(--accent2); }
+
+      footer { padding: 40px 0 60px; color: var(--muted); font-size: 13px; text-align: center; }
+
+      @media (max-width: 620px) {
+        .hero h1 { font-size: 34px; }
+        .cols { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="wrap">
+        <span class="badge">Growth engine · powered by AI</span>
+        <h1>Good apps die unseen.<br /><span>GrowthKit</span> fixes that.</h1>
+        <p>
+          Add one line of code and an AI assembles a viral growth loop tailored to
+          your app — then optimizes it. No marketing team. No ad budget.
+        </p>
+        <div class="cta">
+          <a class="btn btn--primary" href="../apps/fittrack/index.html">▶ Try the live demo</a>
+          <a class="btn btn--ghost" href="../dashboard/index.html">See the dashboard</a>
+        </div>
+        <div class="code">&lt;script src="growthkit.js" data-app-name="<b>YourApp</b>" ...&gt;&lt;/script&gt;</div>
+      </div>
+    </section>
+
+    <!-- Problem -->
+    <section class="section">
+      <div class="wrap">
+        <h2>The problem</h2>
+        <p class="lead">
+          Today an app succeeds not because it's the best, but because someone paid
+          the most for ads. Thousands of genuinely useful apps never reach the people
+          who need them — their teams simply can't afford to be discovered. Attention
+          is bought, not earned.
+        </p>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="section">
+      <div class="wrap">
+        <h2>How it works</h2>
+        <p class="lead">Three layers, one line of code.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step__n">01 · DIAGNOSE</div>
+            <h3>AI director</h3>
+            <p>Looks at the app — niche, type, launched or not — and decides which growth mechanics actually fit it.</p>
+          </div>
+          <div class="step">
+            <div class="step__n">02 · ASSEMBLE</div>
+            <h3>The loop builds itself</h3>
+            <p>The SDK renders the assigned mechanics from a library of proven blocks — no developer work, no new release.</p>
+          </div>
+          <div class="step">
+            <div class="step__n">03 · OPTIMIZE</div>
+            <h3>Self-tuning</h3>
+            <p>It measures which card and copy convert best and routes more traffic to the winner. A/B testing on autopilot.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mechanics -->
+    <section class="section">
+      <div class="wrap">
+        <h2>Proven growth mechanics</h2>
+        <p class="lead">The AI composes a loop from battle-tested building blocks.</p>
+        <div class="mechs">
+          <div class="mech">🏆 Share achievement <small>· Strava</small></div>
+          <div class="mech">✨ Made-with watermark <small>· Gamma</small></div>
+          <div class="mech">🤝 Invite a friend <small>· Dropbox</small></div>
+          <div class="mech">⏳ Waitlist queue <small>· Robinhood</small></div>
+          <div class="mech">👥 Collaboration invite <small>· Figma</small></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Different loops proof -->
+    <section class="section">
+      <div class="wrap">
+        <h2>One SDK, different loops</h2>
+        <p class="lead">The same <code>growthkit.js</code>, two very different apps — the AI assembles a different loop for each.</p>
+        <div class="cols">
+          <div class="col">
+            <h3>🏃 FitTrack · launched</h3>
+            <p>AI picked <b>share achievement + invite a friend</b> — people love showing off their results.</p>
+            <a class="btn btn--ghost" style="margin-top:14px; display:inline-block;" href="../apps/fittrack/index.html">Open</a>
+          </div>
+          <div class="col">
+            <h3>🛡️ GuardianSOS · pre-launch</h3>
+            <p>AI picked <b>invite contacts + waitlist</b> — build the trusted network and the early-access queue.</p>
+            <a class="btn btn--ghost" style="margin-top:14px; display:inline-block;" href="../apps/guardiansos/index.html">Open</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Business + Impact flywheel -->
+    <section class="section">
+      <div class="wrap">
+        <h2>Business ↔ Impact — one flywheel</h2>
+        <p class="lead">The more good it does, the more money it makes — and vice versa.</p>
+        <div class="cols">
+          <div class="col">
+            <h3>💼 Business</h3>
+            <p>Commercial apps pay a subscription. We do what Branch &amp; AppsFlyer (valued in the billions) do — but smarter and cheaper, because an AI replaces the growth team.</p>
+          </div>
+          <div class="col col--impact">
+            <h3>🌍 Impact</h3>
+            <p>Free for education, non-profits and social apps — the ones that die not because they're bad, but because no one hears about them. We democratize growth so the best ideas win on merit, not budget.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="wrap">
+        GrowthKit — hackathon prototype. Live demos:
+        <a href="../apps/fittrack/index.html">FitTrack</a> ·
+        <a href="../apps/guardiansos/index.html">GuardianSOS</a> ·
+        <a href="../dashboard/index.html">Dashboard</a>
+      </div>
+    </footer>
+  </body>
+</html>

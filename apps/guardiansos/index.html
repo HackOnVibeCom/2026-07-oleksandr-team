@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GuardianSOS — Personal Safety</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="phone" role="application" aria-label="GuardianSOS">
+      <!-- Safety disclaimer — this is a demo prototype, not a real service -->
+      <div class="disclaimer" role="note">
+        ⚠️ Demo prototype — <b>not a certified emergency tool</b>. No real alerts,
+        SMS or calls are ever sent. All contacts and data below are fictional.
+      </div>
+
+      <header class="app-header">
+        <h1 class="app-header__logo">🛡️ GuardianSOS</h1>
+        <p class="app-header__subtitle">Your emergency network</p>
+        <span class="badge-soon">🔜 Coming soon · Early access</span>
+      </header>
+
+      <section class="screen">
+        <!-- Emergency profile (fictional demo data) -->
+        <div class="card profile">
+          <div class="card__label">Emergency profile · demo</div>
+          <div class="profile__name">Alex Demo</div>
+          <div class="profile__meta">Blood type O+ · Allergy: penicillin · (sample data)</div>
+        </div>
+
+        <!-- Trusted contacts (fictional) -->
+        <div class="card">
+          <div class="card__label">Trusted contacts · demo</div>
+          <ul class="contacts" id="contacts">
+            <li>👩 Mom <span>(demo)</span></li>
+            <li>🧑 Brother <span>(demo)</span></li>
+            <li>🧑‍🤝‍🧑 Best friend <span>(demo)</span></li>
+          </ul>
+        </div>
+
+        <!-- The big SOS button (mock only) -->
+        <button class="sos-btn" id="sos-btn" type="button">🚨 Send SOS</button>
+        <div class="sos-status" id="sos-status" hidden></div>
+        <p class="preview-note">
+          Preview of the live app — full protection unlocks at launch.
+          Join the early-access list below.
+        </p>
+
+        <!-- GrowthKit renders the AI-assigned mechanics here (referral + waitlist) -->
+        <div id="growthkit-slot"></div>
+      </section>
+    </main>
+
+    <!-- GrowthKit backend config (Supabase URL + public anon key) -->
+    <script src="../../config.js"></script>
+
+    <!-- GrowthKit SDK — same one-line integration as FitTrack, different app -->
+    <script
+      src="../../sdk/growthkit.js"
+      data-app-name="GuardianSOS"
+      data-app-niche="personal safety; alerts trusted contacts in danger; pre-launch"
+      data-install-url="install.html"
+      data-api-key="demo-sos"
+    ></script>
+
+    <!-- Host app logic -->
+    <script src="app.js"></script>
+  </body>
+</html>

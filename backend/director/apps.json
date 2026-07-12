@@ -1,0 +1,16 @@
+[
+  {
+    "apiKey": "demo-fittrack",
+    "name": "FitTrack",
+    "niche": "fitness and workout tracking; users complete workouts and hit personal records",
+    "launched": true,
+    "hasAchievements": true
+  },
+  {
+    "apiKey": "demo-sos",
+    "name": "GuardianSOS",
+    "niche": "personal safety; stores the user's emergency profile and instantly alerts family, friends and emergency contacts if the user is in danger (e.g. abduction). Value grows with how many trusted contacts are added. Still pre-launch / early access.",
+    "launched": false,
+    "hasAchievements": false
+  }
+]

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FitTrack — Workout Tracker</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="phone" role="application" aria-label="FitTrack">
+      <header class="app-header">
+        <h1 class="app-header__logo">🏃 FitTrack</h1>
+        <p class="app-header__subtitle">Your workout tracker</p>
+      </header>
+
+      <section class="screen">
+        <!-- Lifetime workout counter -->
+        <div class="stat" aria-live="polite">
+          <span class="stat__value" id="total-count">0</span>
+          <span class="stat__label">workouts completed</span>
+        </div>
+
+        <!-- Active workout timer -->
+        <div class="timer" id="timer-box" hidden>
+          <span class="timer__value" id="timer-value">00:00</span>
+          <span class="timer__label">workout in progress…</span>
+        </div>
+
+        <!-- Controls -->
+        <button class="btn btn--primary" id="start-btn" type="button">▶ Start workout</button>
+        <button class="btn btn--stop" id="stop-btn" type="button" hidden>⏹ Finish workout</button>
+
+        <!-- Result (the "achievement") -->
+        <article class="result" id="result-card" hidden>
+          <div class="result__emoji">🏆</div>
+          <h2 class="result__title">Workout complete!</h2>
+          <p class="result__stats" id="result-stats"></p>
+          <!-- GrowthKit SDK injects its share UI into this slot -->
+          <div id="growthkit-slot"></div>
+        </article>
+      </section>
+    </main>
+
+    <!-- Host app logic -->
+    <script src="app.js"></script>
+
+    <!-- GrowthKit backend config (Supabase URL + public anon key) -->
+    <script src="../../config.js"></script>
+
+    <!-- GrowthKit SDK — single-line integration. All config via data-* attributes. -->
+    <script
+      src="../../sdk/growthkit.js"
+      data-app-name="FitTrack"
+      data-app-niche="fitness & sport"
+      data-install-url="install.html"
+      data-api-key="demo-fittrack"
+    ></script>
+  </body>
+</html>

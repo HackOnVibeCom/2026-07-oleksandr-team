@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Install</title>
+    <style>
+      :root {
+        --ink: #1c1c1e;
+        --muted: #8a8f99;
+        --accent: #0a84ff;
+        --font: -apple-system, "Segoe UI", Roboto, sans-serif;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body {
+        font-family: var(--font);
+        background: #f2f2f7;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 20px;
+        color: var(--ink);
+      }
+      .store {
+        width: 100%;
+        max-width: 420px;
+        background: #fff;
+        border-radius: 22px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+      .store__bar {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--muted);
+        padding: 14px 20px;
+        border-bottom: 1px solid #ececf1;
+      }
+      .app {
+        display: grid;
+        grid-template-columns: 88px 1fr auto;
+        gap: 16px;
+        align-items: center;
+        padding: 22px 20px;
+      }
+      .app__icon {
+        width: 88px;
+        height: 88px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #ff6b35, #f7931e);
+        display: grid;
+        place-items: center;
+        font-size: 44px;
+      }
+      .app__name { font-size: 22px; font-weight: 800; }
+      .app__dev { font-size: 14px; color: var(--muted); margin-top: 2px; }
+      .app__rating { font-size: 13px; color: #f7931e; margin-top: 6px; }
+      .app__rating span { color: var(--muted); }
+      .app__install {
+        grid-column: 3;
+        align-self: center;
+        border: none;
+        background: var(--accent);
+        color: #fff;
+        font-size: 15px;
+        font-weight: 700;
+        padding: 10px 22px;
+        border-radius: 999px;
+        cursor: pointer;
+      }
+      .app__install:active { transform: scale(0.97); }
+      .shots {
+        display: flex;
+        gap: 12px;
+        padding: 4px 20px 22px;
+        overflow-x: auto;
+      }
+      .shot {
+        flex: 0 0 130px;
+        height: 230px;
+        border-radius: 16px;
+        background: linear-gradient(160deg, #eef1f6, #dfe3ec);
+      }
+      .note {
+        font-size: 12px;
+        color: var(--muted);
+        padding: 0 20px 22px;
+        line-height: 1.5;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="store">
+      <div class="store__bar">App Store</div>
+
+      <section class="app">
+        <div class="app__icon" id="app-icon">🏃</div>
+        <div class="app__meta">
+          <h1 class="app__name" id="app-name">App</h1>
+          <p class="app__dev">GrowthKit Demo</p>
+          <p class="app__rating">★★★★★ <span>4.9 · 12K ratings</span></p>
+        </div>
+        <button class="app__install" id="install-btn" type="button">Install</button>
+      </section>
+
+      <section class="shots" aria-hidden="true">
+        <div class="shot"></div>
+        <div class="shot"></div>
+        <div class="shot"></div>
+      </section>
+
+      <p class="note">
+        You arrived here from a shared achievement card. On a real device this
+        link opens the App Store / Google Play; the visit is counted as an
+        install referral for the app that shared it.
+      </p>
+    </main>
+
+    <!-- Public Supabase config (optional — tracking is skipped if absent) -->
+    <script src="../../config.js"></script>
+    <script>
+      /**
+       * Install page. Records a click-through (attribution) for the app that
+       * shared the card, then presents a store-like screen.
+       */
+      (() => {
+        "use strict";
+
+        const params = new URLSearchParams(location.search);
+        const appName = params.get("name") || "FitTrack";
+        const appKey = params.get("app") || "unknown";
+        const ref = params.get("ref");
+        const variant = params.get("variant");
+
+        document.getElementById("app-name").textContent = appName;
+        document.title = `Install ${appName}`;
+
+        const cfg = window.GROWTHKIT_CONFIG;
+        const isConfigured =
+          !!cfg?.supabaseUrl && !cfg.supabaseUrl.includes("YOUR-PROJECT");
+
+        /** Record the click in Supabase via its public REST endpoint. */
+        async function recordClick() {
+          if (!isConfigured) {
+            console.info("[GrowthKit] Supabase not configured — skipping tracking.");
+            return;
+          }
+          try {
+            const response = await fetch(`${cfg.supabaseUrl}/rest/v1/clicks`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                apikey: cfg.supabaseAnonKey,
+                Authorization: `Bearer ${cfg.supabaseAnonKey}`,
+                Prefer: "return=minimal",
+              },
+              body: JSON.stringify({ app_key: appKey, ref, variant, type: "install" }),
+            });
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            console.info("[GrowthKit] Click recorded for", appKey);
+          } catch (error) {
+            console.error("[GrowthKit] Failed to record click:", error);
+          }
+        }
+
+        recordClick();
+
+        document.getElementById("install-btn").addEventListener("click", (event) => {
+          event.target.textContent = "Installing…";
+          setTimeout(() => (event.target.textContent = "Open"), 1200);
+        });
+      })();
+    </script>
+  </body>
+</html>

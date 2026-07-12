@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GrowthKit — Dashboard</title>
+    <style>
+      :root {
+        --bg: #0f1016;
+        --card: #1a1c26;
+        --line: #262936;
+        --accent: #6d5efc;
+        --good: #34d399;
+        --ink: #eceef3;
+        --muted: #8a8f99;
+        --font: -apple-system, "Segoe UI", Roboto, sans-serif;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body {
+        font-family: var(--font);
+        background: var(--bg);
+        color: var(--ink);
+        min-height: 100vh;
+        padding: 28px 18px 48px;
+      }
+      .wrap { max-width: 760px; margin: 0 auto; }
+
+      header.top { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+      .brand { font-size: 20px; font-weight: 800; }
+      .brand span { color: var(--accent); }
+      .apps { display: flex; gap: 8px; }
+      .app-btn {
+        border: 1px solid var(--line); background: var(--card); color: var(--ink);
+        font: 700 13px var(--font); padding: 9px 14px; border-radius: 999px; cursor: pointer;
+      }
+      .app-btn.active { background: var(--accent); border-color: var(--accent); }
+
+      .status { font-size: 12px; color: var(--muted); margin: 10px 2px 18px; min-height: 15px; }
+
+      .card {
+        background: var(--card); border: 1px solid var(--line);
+        border-radius: 18px; padding: 20px; margin-bottom: 16px;
+      }
+      .card__label {
+        font-size: 11px; font-weight: 700; text-transform: uppercase;
+        letter-spacing: 0.5px; color: var(--muted); margin-bottom: 12px;
+      }
+
+      /* Strategy */
+      .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+      .chip {
+        background: rgba(109, 94, 252, 0.16); color: #c3bbff;
+        font-size: 13px; font-weight: 700; padding: 7px 13px; border-radius: 999px;
+      }
+      .reason { font-size: 14px; color: var(--muted); margin-top: 12px; line-height: 1.5; }
+
+      /* Metric tiles */
+      .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; }
+      .tile { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px; }
+      .tile__value { font-size: 30px; font-weight: 800; line-height: 1.1; font-variant-numeric: tabular-nums; }
+      .tile__value.good { color: var(--good); }
+      .tile__label { font-size: 12px; color: var(--muted); margin-top: 4px; }
+      .tile__hint { font-size: 11px; color: #5c6069; margin-top: 6px; }
+
+      /* Chart */
+      .chart { display: flex; align-items: flex-end; gap: 5px; height: 130px; }
+      .bar { flex: 1; background: linear-gradient(180deg, var(--accent), #4a37d6); border-radius: 4px 4px 0 0; min-height: 3px; }
+      .chart-x { display: flex; justify-content: space-between; font-size: 10px; color: #5c6069; margin-top: 8px; }
+
+      /* A/B */
+      .ab { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      .variant { border: 1px solid var(--line); border-radius: 14px; padding: 16px; position: relative; }
+      .variant.win { border-color: var(--good); background: rgba(52, 211, 153, 0.06); }
+      .variant__name { font-size: 13px; font-weight: 800; }
+      .variant__conv { font-size: 26px; font-weight: 800; margin: 6px 0 2px; font-variant-numeric: tabular-nums; }
+      .variant__sub { font-size: 12px; color: var(--muted); }
+      .win-tag { position: absolute; top: 12px; right: 12px; background: var(--good); color: #06281c; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 999px; }
+      .ab-note { font-size: 12px; color: var(--muted); margin-top: 12px; line-height: 1.5; }
+
+      .warn { display: none; color: #ffb35c; background: rgba(255, 179, 92, 0.1); border-radius: 12px; padding: 14px; font-size: 13px; line-height: 1.5; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="top">
+        <div class="brand">✨ Growth<span>Kit</span> · dashboard</div>
+        <div class="apps" id="apps"></div>
+      </header>
+      <div class="status" id="status"></div>
+
+      <div class="warn" id="warn">
+        Supabase is not configured. Add your keys to <b>config.js</b> and reload.
+      </div>
+
+      <div id="content" hidden>
+        <!-- AI strategy -->
+        <div class="card">
+          <div class="card__label">🤖 Strategy assembled by the AI director</div>
+          <div class="chips" id="chips"></div>
+          <div class="reason" id="reason"></div>
+        </div>
+
+        <!-- Business metrics -->
+        <div class="tiles" id="tiles"></div>
+
+        <!-- Chart -->
+        <div class="card" style="margin-top:16px;">
+          <div class="card__label">📈 Installs per day (last 14 days)</div>
+          <div class="chart" id="chart"></div>
+          <div class="chart-x" id="chart-x"></div>
+        </div>
+
+        <!-- A/B optimization -->
+        <div class="card">
+          <div class="card__label">⚖️ Self-optimization — winning variant</div>
+          <div class="ab" id="ab"></div>
+          <div class="ab-note" id="ab-note"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../config.js"></script>
+    <script>
+      /**
+       * GrowthKit dashboard. Reads the AI strategy and analytics events from
+       * Supabase and renders business metrics, a daily chart and the winning
+       * A/B variant. Aggregation is done client-side for demo simplicity.
+       */
+      (() => {
+        "use strict";
+
+        const CPI = 2.1;   // assumed cost per install ($) for "ad spend saved"
+        const REACH = 3;   // assumed people who see each share (for K-factor)
+
+        const APPS = [
+          { key: "demo-fittrack", name: "🏃 FitTrack" },
+          { key: "demo-sos", name: "🛡️ GuardianSOS" },
+        ];
+        let current = APPS[0];
+
+        const cfg = window.GROWTHKIT_CONFIG;
+        const isConfigured = !!cfg?.supabaseUrl && !cfg.supabaseUrl.includes("YOUR-PROJECT");
+
+        const $ = (id) => document.getElementById(id);
+
+        // App selector buttons
+        APPS.forEach((app) => {
+          const btn = document.createElement("button");
+          btn.className = "app-btn" + (app.key === current.key ? " active" : "");
+          btn.textContent = app.name;
+          btn.addEventListener("click", () => {
+            current = app;
+            document.querySelectorAll(".app-btn").forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            load();
+          });
+          $("apps").appendChild(btn);
+        });
+
+        if (!isConfigured) {
+          $("warn").style.display = "block";
+          return;
+        }
+
+        const headers = {
+          apikey: cfg.supabaseAnonKey,
+          Authorization: `Bearer ${cfg.supabaseAnonKey}`,
+        };
+
+        async function api(path) {
+          const res = await fetch(`${cfg.supabaseUrl}/rest/v1/${path}`, { headers });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return res.json();
+        }
+
+        async function load() {
+          $("status").textContent = "loading…";
+          try {
+            const [events, strategyRows] = await Promise.all([
+              api(`clicks?app_key=eq.${current.key}&select=type,variant,created_at`),
+              api(`strategies?app_key=eq.${current.key}&select=strategy,reasoning`),
+            ]);
+            render(events, strategyRows[0]);
+            $("content").hidden = false;
+            $("status").textContent = `updated ${new Date().toLocaleTimeString()}`;
+          } catch (error) {
+            console.error(error);
+            $("status").textContent = "failed to load — check console";
+          }
+        }
+
+        function render(events, strategyRow) {
+          renderStrategy(strategyRow);
+
+          const shares = events.filter((e) => e.type === "share").length;
+          const installs = events.filter((e) => e.type === "install").length;
+          const conversion = shares ? installs / shares : 0;
+          const kFactor = conversion * REACH;
+          const saved = installs * CPI;
+
+          renderTiles({ installs, shares, conversion, kFactor, saved });
+          renderChart(events);
+          renderAB(events);
+        }
+
+        function renderStrategy(row) {
+          const mechanics = row?.strategy?.mechanics || [];
+          $("chips").innerHTML = mechanics
+            .map((m) => `<span class="chip">${m.type}</span>`)
+            .join("");
+          $("reason").textContent = row?.reasoning || "";
+        }
+
+        function tile(value, label, hint, good) {
+          return (
+            `<div class="tile"><div class="tile__value${good ? " good" : ""}">${value}</div>` +
+            `<div class="tile__label">${label}</div>` +
+            (hint ? `<div class="tile__hint">${hint}</div>` : "") +
+            `</div>`
+          );
+        }
+
+        function renderTiles({ installs, shares, conversion, kFactor, saved }) {
+          $("tiles").innerHTML =
+            tile(installs, "Installs", "via shared links") +
+            tile(shares, "Shares", "growth loops shown") +
+            tile(Math.round(conversion * 100) + "%", "Conversion", "install per share") +
+            tile("×" + kFactor.toFixed(2), "K-factor", `viral if >1 · ~${REACH} see each share`, kFactor > 1) +
+            tile("$" + Math.round(saved), "Ad spend saved", `at $${CPI} per install`, true);
+        }
+
+        function renderChart(events) {
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+          const days = [];
+          for (let i = 13; i >= 0; i--) {
+            const d = new Date(today);
+            d.setDate(d.getDate() - i);
+            days.push({ t: d.getTime(), label: `${d.getMonth() + 1}/${d.getDate()}`, count: 0 });
+          }
+          for (const e of events) {
+            if (e.type !== "install") continue;
+            const d = new Date(e.created_at);
+            d.setHours(0, 0, 0, 0);
+            const day = days.find((x) => x.t === d.getTime());
+            if (day) day.count++;
+          }
+          const max = Math.max(1, ...days.map((d) => d.count));
+          $("chart").innerHTML = days
+            .map((d) => `<div class="bar" style="height:${(d.count / max) * 100}%" title="${d.label}: ${d.count}"></div>`)
+            .join("");
+          $("chart-x").innerHTML = `<span>${days[0].label}</span><span>today</span>`;
+        }
+
+        function renderAB(events) {
+          const stat = (v) => {
+            const s = events.filter((e) => e.type === "share" && e.variant === v).length;
+            const i = events.filter((e) => e.type === "install" && e.variant === v).length;
+            return { s, i, conv: s ? i / s : 0 };
+          };
+          const a = stat("A");
+          const b = stat("B");
+          const winner = a.conv >= b.conv ? "A" : "B";
+
+          const col = (name, d) =>
+            `<div class="variant${winner === name ? " win" : ""}">` +
+            (winner === name ? `<span class="win-tag">WINNER</span>` : "") +
+            `<div class="variant__name">Variant ${name}</div>` +
+            `<div class="variant__conv">${Math.round(d.conv * 100)}%</div>` +
+            `<div class="variant__sub">${d.i} installs / ${d.s} shares</div></div>`;
+
+          $("ab").innerHTML = col("A", a) + col("B", b);
+          $("ab-note").textContent =
+            `Variant ${winner} converts better, so GrowthKit routes more traffic to it — ` +
+            `the loop optimizes itself, no manual A/B analysis needed.`;
+        }
+
+        load();
+        setInterval(load, 8000);
+      })();
+    </script>
+  </body>
+</html>
